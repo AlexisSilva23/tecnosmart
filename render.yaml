@@ -1,0 +1,168 @@
+services:
+  # 1.EUREKA
+  - type: web
+    name: eureka-server
+    env: docker
+    dockerContext: ./eureka-server
+    plan: free
+    
+  # 2. API GATEWAY 
+  - type: web
+    name: api-gateway
+    env: docker
+    dockerContext: ./api-gateway
+    plan: free
+    envVars:
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/ 
+
+  # 3. MICROSERVICIOS DE NEGOCIO
+  - type: web
+    name: carrito-service
+    env: docker
+    dockerContext: ./carrito-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_carrito
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: catalogo-service
+    env: docker
+    dockerContext: ./catalogo-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_catalogo
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: despacho-service
+    env: docker
+    dockerContext: ./despacho-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_despacho
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: envios-service
+    env: docker
+    dockerContext: ./envios-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_envios
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: favoritos-service
+    env: docker
+    dockerContext: ./favoritos-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_favoritos
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: inventario-service
+    env: docker
+    dockerContext: ./inventario-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_inventario
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: notificaciones-service
+    env: docker
+    dockerContext: ./notificaciones-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_notificaciones
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: pagos-service
+    env: docker
+    dockerContext: ./pagos-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_pagos
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: pedidos-service
+    env: docker
+    dockerContext: ./pedidos-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_pedidos
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
+
+  - type: web
+    name: usuarios-service
+    env: docker
+    dockerContext: ./usuarios-service
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://tu-db-remota:3306/db_usuarios
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tu_usuario
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: tu_password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: https://tu-eureka-server.onrender.com/eureka/
