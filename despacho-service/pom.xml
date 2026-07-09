@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>duoc</groupId>
-	<artifactId>carrito-service</artifactId>
+	<artifactId>despacho-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
@@ -55,6 +55,11 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
 		<dependency>

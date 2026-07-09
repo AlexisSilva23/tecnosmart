@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>duoc</groupId>
-	<artifactId>carrito-service</artifactId>
+	<artifactId>favoritos-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>

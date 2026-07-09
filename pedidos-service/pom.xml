@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>duoc</groupId>
-	<artifactId>carrito-service</artifactId>
+	<artifactId>pedidos-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
@@ -50,6 +50,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
 		<dependency>
