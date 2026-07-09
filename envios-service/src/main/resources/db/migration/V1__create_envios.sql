@@ -1,4 +1,5 @@
-CREATE TABLE envios (
+-- V1__crear_tabla_envios.sql
+ envios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     destinatario VARCHAR(255) NOT NULL,
     direccion_destino VARCHAR(255) NOT NULL,
