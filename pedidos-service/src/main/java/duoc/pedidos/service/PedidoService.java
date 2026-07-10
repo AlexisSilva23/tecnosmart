@@ -2,7 +2,9 @@ package duoc.pedidos.service;
 
 import duoc.pedidos.client.CarritoClient;
 import duoc.pedidos.client.InventarioClient;
+import duoc.pedidos.client.ProductoClient;
 import duoc.pedidos.dto.CarritoItemDTO;
+import duoc.pedidos.dto.ProductoResponseDTO;
 import duoc.pedidos.model.Pedido;
 import duoc.pedidos.model.PedidoItem;
 import duoc.pedidos.repository.PedidoRepository;
@@ -30,6 +32,9 @@ public class PedidoService {
     @Autowired
     private CarritoClient carritoClient;
 
+    @Autowired
+    private ProductoClient productoClient;
+
     @Transactional
     public Pedido procesarCompra(Long usuarioId) {
         log.info("Iniciando proceso de compra para el usuario ID: {}", usuarioId);
@@ -54,14 +59,22 @@ public class PedidoService {
         nuevoPedido.setEstado("PAGADO");
 
         List<PedidoItem> items = new ArrayList<>();
+        double total = 0.0;
+
         for (CarritoItemDTO carritoItem : productosEnCarrito) {
+            ProductoResponseDTO producto = productoClient.obtenerProducto(carritoItem.getProductoId());
+
             PedidoItem pedidoItem = new PedidoItem();
             pedidoItem.setProductoId(carritoItem.getProductoId());
             pedidoItem.setCantidad(carritoItem.getCantidad());
+            pedidoItem.setPrecioUnitario(producto.getPrecio());
             pedidoItem.setPedido(nuevoPedido);
             items.add(pedidoItem);
+
+            total += producto.getPrecio() * carritoItem.getCantidad();
         }
         nuevoPedido.setItems(items);
+        nuevoPedido.setTotal(total);
 
         Pedido pedidoGuardado = pedidoRepository.save(nuevoPedido);
         log.info("Pedido guardado con éxito, ID: {}", pedidoGuardado.getId());

@@ -2,7 +2,9 @@ package duoc.pedidos;
 
 import duoc.pedidos.client.CarritoClient;
 import duoc.pedidos.client.InventarioClient;
+import duoc.pedidos.client.ProductoClient;
 import duoc.pedidos.dto.CarritoItemDTO;
+import duoc.pedidos.dto.ProductoResponseDTO;
 import duoc.pedidos.model.Pedido;
 import duoc.pedidos.repository.PedidoRepository;
 import duoc.pedidos.service.PedidoService;
@@ -31,8 +33,19 @@ class PedidoServiceTest {
 	@Mock
 	private InventarioClient inventarioClient;
 
+	@Mock
+	private ProductoClient productoClient;
+
 	@InjectMocks
 	private PedidoService service;
+
+	// método auxiliar para no repetir la construcción del DTO en cada test
+	private ProductoResponseDTO productoConPrecio(Long id, Double precio) {
+		ProductoResponseDTO producto = new ProductoResponseDTO();
+		producto.setId(id);
+		producto.setPrecio(precio);
+		return producto;
+	}
 
 	@Test
 	void procesarCompra_debeGuardarPedidoYVaciarCarritoCuandoTodoEsCorrecto() {
@@ -42,6 +55,7 @@ class PedidoServiceTest {
 
 		when(carritoClient.obtenerCarrito(1L)).thenReturn(List.of(item));
 		when(inventarioClient.validarStock(10L, 2)).thenReturn(true);
+		when(productoClient.obtenerProducto(10L)).thenReturn(productoConPrecio(10L, 15000.0));
 		when(pedidoRepository.save(any(Pedido.class))).thenAnswer(i -> {
 			Pedido p = i.getArgument(0);
 			p.setId(1L);
@@ -53,6 +67,7 @@ class PedidoServiceTest {
 		assertEquals(1L, resultado.getUsuarioId());
 		assertEquals("PAGADO", resultado.getEstado());
 		assertNotNull(resultado.getFecha());
+		assertEquals(30000.0, resultado.getTotal()); // 2 unidades x 15000
 		verify(pedidoRepository).save(any(Pedido.class));
 		verify(carritoClient).vaciarCarrito(1L);
 	}
@@ -62,8 +77,9 @@ class PedidoServiceTest {
 		when(carritoClient.obtenerCarrito(1L)).thenReturn(List.of());
 
 		assertThrows(IllegalStateException.class, () -> service.procesarCompra(1L));
-		// si el carrito está vacío, no debe tocar ni inventario ni repositorio
+		// si el carrito está vacío, no debe tocar ni inventario, ni catálogo, ni repositorio
 		verify(inventarioClient, never()).validarStock(any(), any());
+		verify(productoClient, never()).obtenerProducto(any());
 		verify(pedidoRepository, never()).save(any());
 		verify(carritoClient, never()).vaciarCarrito(any());
 	}
@@ -78,7 +94,8 @@ class PedidoServiceTest {
 		when(inventarioClient.validarStock(10L, 5)).thenReturn(false);
 
 		assertThrows(IllegalStateException.class, () -> service.procesarCompra(1L));
-		// si no hay stock, no debe guardarse el pedido ni vaciarse el carrito
+		// si no hay stock, no debe consultarse el precio ni guardarse el pedido
+		verify(productoClient, never()).obtenerProducto(any());
 		verify(pedidoRepository, never()).save(any());
 		verify(carritoClient, never()).vaciarCarrito(any());
 	}
@@ -103,13 +120,14 @@ class PedidoServiceTest {
 	}
 
 	@Test
-	void procesarCompra_debeAsignarItemsDelCarritoAlPedido() {
+	void procesarCompra_debeAsignarItemsDelCarritoAlPedidoConPrecioYTotalCorrectos() {
 		CarritoItemDTO item = new CarritoItemDTO();
 		item.setProductoId(10L);
 		item.setCantidad(2);
 
 		when(carritoClient.obtenerCarrito(1L)).thenReturn(List.of(item));
 		when(inventarioClient.validarStock(10L, 2)).thenReturn(true);
+		when(productoClient.obtenerProducto(10L)).thenReturn(productoConPrecio(10L, 15000.0));
 		when(pedidoRepository.save(any(Pedido.class))).thenAnswer(i -> i.getArgument(0));
 
 		Pedido resultado = service.procesarCompra(1L);
@@ -118,6 +136,8 @@ class PedidoServiceTest {
 		assertEquals(1, resultado.getItems().size());
 		assertEquals(10L, resultado.getItems().get(0).getProductoId());
 		assertEquals(2, resultado.getItems().get(0).getCantidad());
+		assertEquals(15000.0, resultado.getItems().get(0).getPrecioUnitario()); // antes quedaba null
+		assertEquals(30000.0, resultado.getTotal()); // antes quedaba null
 	}
 
 	@Test
@@ -172,7 +192,6 @@ class PedidoServiceTest {
 
 		assertTrue(resultado.isEmpty());
 	}
-
 
 	@Test
 	void actualizarEstado_debeActualizarYGuardarElNuevoEstado() {

@@ -1,5 +1,5 @@
 -- V1__crear_tabla_usuarios.sql
- IF NOT EXISTS usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre    VARCHAR(100) NOT NULL,
     email     VARCHAR(100) NOT NULL UNIQUE,
