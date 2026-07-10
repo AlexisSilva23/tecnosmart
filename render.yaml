@@ -24,7 +24,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -35,7 +35,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -46,7 +46,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -57,7 +57,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -68,7 +68,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -79,7 +79,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -90,7 +90,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -101,7 +101,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -112,7 +112,7 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
 
@@ -123,6 +123,6 @@ services:
     plan: free
     envVars:
       - key: DB_PASSWORD
-        value: jNTGJRDNB7rC3cVH0RTq462LCdz6SMfd
+        sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
