@@ -26,7 +26,13 @@ services:
     dockerContext: ./usuarios-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -38,7 +44,13 @@ services:
     dockerContext: ./catalogo-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -50,7 +62,13 @@ services:
     dockerContext: ./inventario-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -62,7 +80,13 @@ services:
     dockerContext: ./carrito-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -74,7 +98,13 @@ services:
     dockerContext: ./pedidos-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -86,7 +116,13 @@ services:
     dockerContext: ./pagos-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -98,7 +134,13 @@ services:
     dockerContext: ./despacho-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -110,7 +152,13 @@ services:
     dockerContext: ./envios-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -122,7 +170,13 @@ services:
     dockerContext: ./favoritos-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
@@ -134,7 +188,13 @@ services:
     dockerContext: ./notificaciones-service
     plan: free
     envVars:
-      - key: DB_PASSWORD
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tecnosmart_user
+      - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: EUREKA_URL
         value: https://eureka-server.onrender.com/eureka/
