@@ -29,7 +29,8 @@ public class DataLoader implements CommandLineRunner {
             Usuario usuario = new Usuario();
             usuario.setNombre(faker.name().fullName());
             usuario.setEmail(faker.internet().emailAddress());
-            // ajustá según los campos reales de tu entidad Usuario
+            usuario.setPassword(faker.internet().password(8, 16));
+            usuario.setDireccion(faker.address().fullAddress());
             usuarioRepository.save(usuario);
         }
 
