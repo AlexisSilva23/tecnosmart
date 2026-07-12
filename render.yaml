@@ -29,7 +29,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=usuarios
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -47,7 +47,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=catalogo
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -65,7 +65,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=inventario
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -83,7 +83,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=carrito
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -101,7 +101,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=pedidos
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -119,7 +119,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=pagos
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -137,7 +137,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=despacho
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -155,7 +155,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=envios
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -173,7 +173,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=favoritos
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
@@ -191,7 +191,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
+        value: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart?currentSchema=notificaciones
       - key: SPRING_DATASOURCE_USERNAME
         value: tecnosmart_user
       - key: SPRING_DATASOURCE_PASSWORD
