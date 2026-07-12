@@ -29,20 +29,20 @@ usuario   catalogo    inventario     carrito      pedidos       pagos ...
 
 ## Microservicios
 
-| Servicio | Puerto | Responsabilidad | Autor | Datafaker + HATEOAS |
-|---|---|---|---|---|
-| eureka-server | 8761 | Registro y descubrimiento de servicios | Propio | N/A |
-| api-gateway | 8080 | Punto de entrada único, enrutamiento | Propio | N/A |
-| usuario-service | 8081 | Gestión de usuarios | Propio | ✅ |
-| catalogo-service | 8082 | Categorías y productos | Propio | ✅ |
-| inventario-service | 8083 | Stock de productos | Propio | ✅ |
-| carrito-service | 8084 | Carrito de compras | Propio | ✅ |
-| pedidos-service | 8085 | Órdenes de compra | Propio | ✅ |
-| pagos-service | 8086 | Procesamiento de pagos | Propio | ✅ |
-| despacho-service | 8087 | Gestión de despachos | Propio | ✅ |
-| envios-service | 8088 | Seguimiento de envíos | Compañero | ✅ |
-| favoritos-service | 8089 | Lista de favoritos | Compañero | ✅ |
-| notificaciones-service | 8090 | Notificaciones a usuarios | Compañero | ✅ |
+| Servicio | Puerto | Responsabilidad | Autor  | Datafaker + HATEOAS |
+|---|---|---|--------|---|
+| eureka-server | 8761 | Registro y descubrimiento de servicios | Ambos  | N/A |
+| api-gateway | 8080 | Punto de entrada único, enrutamiento | Ambos  | N/A |
+| usuario-service | 8081 | Gestión de usuarios | Alexis | ✅ |
+| catalogo-service | 8082 | Categorías y productos | Alexis | ✅ |
+| inventario-service | 8083 | Stock de productos | Alexis | ✅ |
+| carrito-service | 8084 | Carrito de compras | Alexis | ✅ |
+| pedidos-service | 8085 | Órdenes de compra | Alexis | ✅ |
+| pagos-service | 8086 | Procesamiento de pagos | Felipe | ✅ |
+| despacho-service | 8087 | Gestión de despachos | Felipe | ✅ |
+| envios-service | 8088 | Seguimiento de envíos | Felipe | ✅ |
+| favoritos-service | 8089 | Lista de favoritos | Felipe | ✅ |
+| notificaciones-service | 8090 | Notificaciones a usuarios | Felipe | ✅ |
 
 > **Nota:** el nombre del servicio `usuario-service` en `docker-compose.yml` no lleva "s", aunque la carpeta del proyecto sí se llama `usuarios-service`.
 
