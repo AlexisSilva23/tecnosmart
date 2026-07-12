@@ -1,7 +1,7 @@
 package duoc.pagos.controller;
 
 import duoc.pagos.dto.PagoRequest;
-import duoc.pagos.entity.Pago;
+import duoc.pagos.model.Pago;
 import duoc.pagos.service.PagoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

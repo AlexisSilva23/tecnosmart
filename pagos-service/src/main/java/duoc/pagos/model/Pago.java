@@ -1,4 +1,4 @@
-package duoc.pagos.entity;
+package duoc.pagos.model;
 
 import jakarta.persistence.*;
 import lombok.*;

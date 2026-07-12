@@ -1,6 +1,6 @@
 package duoc.pagos.repository;
 
-import duoc.pagos.entity.Pago;
+import duoc.pagos.model.Pago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

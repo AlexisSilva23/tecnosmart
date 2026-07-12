@@ -1,7 +1,7 @@
 package duoc.pagos.service;
 
 import duoc.pagos.dto.PagoRequest;
-import duoc.pagos.entity.Pago;
+import duoc.pagos.model.Pago;
 import duoc.pagos.repository.PagoRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

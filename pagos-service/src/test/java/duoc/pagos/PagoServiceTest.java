@@ -1,7 +1,7 @@
 package duoc.pagos;
 
 import duoc.pagos.dto.PagoRequest;
-import duoc.pagos.entity.Pago;
+import duoc.pagos.model.Pago;
 import duoc.pagos.repository.PagoRepository;
 import duoc.pagos.service.PagoService;
 import org.junit.jupiter.api.Test;

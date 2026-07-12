@@ -18,9 +18,9 @@ public class Inventario {
 
     @Column(nullable = false)
     private Integer cantidad;
+}
 
-    /*
+/*
     Explicación: su función es registrar las unidades de cada producto,
     y se asegura de que no existan 2 filas distintas del mismo producto.
      */
-}
