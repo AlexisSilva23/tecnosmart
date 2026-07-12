@@ -295,7 +295,31 @@ En cualquier respuesta `GET` de un recurso individual (por ejemplo `GET /usuario
 - [ ] Las respuestas de la API incluyen enlaces `_links` (HATEOAS)
 - [ ] El mismo flujo funciona tanto en local (Docker Compose) como en producción (Render)
 
----
+## Colección de Postman
+
+El repositorio incluye [`TecnoSmart.postman_collection.json`](./TecnoSmart.postman_collection.json), lista para importar en Postman. Contiene:
+
+- **Flujo de compra completo:** las 6 peticiones del flujo principal de negocio (usuario → producto → carrito → pedido), con tests automáticos que verifican que `total` y `precioUnitario` no sean `null`.
+- **CRUD por microservicio:** una carpeta por cada uno de los 10 microservicios con base de datos, con peticiones `GET`, `POST` (crear) y `DELETE` (eliminar) de prueba.
+
+### Cómo importarla y usarla
+
+1. En Postman: **Import** → selecciona el archivo `TecnoSmart.postman_collection.json`.
+2. Click en la colección → pestaña **Variables** → ajusta `base_url`:
+   - Local: `http://localhost:8080`
+   - Producción: la URL pública real del `api-gateway` en Render.
+3. Todas las rutas del negocio pasan por el Gateway bajo el prefijo `/api/` (por ejemplo `{{base_url}}/api/usuarios`), configurado en `api-gateway/src/main/resources/application.yaml`.
+4. Después de un `POST` que crea un recurso, copia el `id` devuelto en la respuesta y actualiza la variable correspondiente (`usuario_id`, `producto_id`, `pedido_id`, etc.) antes de usarlo en otras peticiones o en el `DELETE`.
+
+### Nivel de confianza de las rutas y los DTOs
+
+Las rutas base (`/api/<recurso>`) están confirmadas contra el `application.yaml` real del Gateway. Los cuerpos (`body`) de las peticiones `POST` están confirmados contra los `RequestDTO` reales para:
+
+- `UsuarioRequestDTO` (`nombre`, `email`, `password`, `direccion`)
+- `InventarioRequestDTO` (`productoId`, `cantidad`)
+- `CarritoRequestDTO` (`usuarioId`, `productoId`, `cantidad`)
+
+Para el resto de los servicios (`categorias`, `productos`, `pedidos`, `pagos`, `despachos`, `envios`, `favoritos`, `notificaciones`), el cuerpo de las peticiones es una estimación basada en el mismo patrón (campos planos, sin objetos anidados) y en las entidades JPA correspondientes, pero **no está verificado contra el `RequestDTO` real de cada uno**. Si una petición `POST` devuelve `400 Bad Request`, compara el body enviado contra el `RequestDTO` real de ese microservicio y ajusta los nombres de campo directamente en Postman.
 
 ## Estructura del repositorio
 
@@ -315,6 +339,7 @@ tecnosmart/
 ├── notificaciones-service/
 ├── docker-compose.yml
 ├── render.yaml
+├── TecnoSmart.postman_collection.json
 └── README.md
 ```
 

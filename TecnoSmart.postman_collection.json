@@ -1,0 +1,303 @@
+{
+  "info": {
+    "name": "TecnoSmart - Flujo de compra + CRUD",
+    "description": "Colección de pruebas de TecnoSmart a través del API Gateway. Incluye el flujo principal de negocio (usuario -> producto -> carrito -> pedido) y operaciones de creación/eliminación (agregar y quitar registros de prueba) para cada uno de los 10 microservicios con base de datos.\n\nRUTAS CONFIRMADAS con el Gateway real (application.yaml): todas usan el prefijo /api/ (por ejemplo /api/usuarios, /api/productos, /api/categorias, /api/carrito, /api/pedidos, /api/despachos, /api/pagos, /api/envios, /api/favoritos, /api/notificaciones).\n\nDTOs CONFIRMADOS contra el código real: UsuarioRequestDTO (nombre, email, password, direccion), InventarioRequestDTO (productoId, cantidad) y CarritoRequestDTO (usuarioId, productoId, cantidad) - todos con campos planos, sin objetos anidados.\n\nDTOs NO CONFIRMADOS (estructura estimada por patrón, verificar antes de usar): CategoriaRequestDTO, ProductoRequestDTO, PedidoRequestDTO, PagoRequestDTO, DespachoRequestDTO, EnvioRequestDTO/ModelEnvio, FavoritoRequestDTO/ModelFavorito, NotificacionRequestDTO/ModelNotificacion. Si algún POST devuelve 400 (Bad Request), revisa el RequestDTO real de ese servicio y ajusta los nombres de campo en el body.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080", "type": "string", "description": "Cambiar a la URL del api-gateway en Render para probar producción." },
+    { "key": "usuario_id", "value": "1", "type": "string" },
+    { "key": "producto_id", "value": "3", "type": "string" },
+    { "key": "categoria_id", "value": "1", "type": "string" },
+    { "key": "inventario_id", "value": "1", "type": "string" },
+    { "key": "carrito_id", "value": "1", "type": "string" },
+    { "key": "pedido_id", "value": "1", "type": "string" },
+    { "key": "pago_id", "value": "1", "type": "string" },
+    { "key": "despacho_id", "value": "1", "type": "string" },
+    { "key": "envio_id", "value": "1", "type": "string" },
+    { "key": "favorito_id", "value": "1", "type": "string" },
+    { "key": "notificacion_id", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Flujo de compra completo",
+      "item": [
+        {
+          "name": "1. Consultar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/usuarios", "host": ["{{base_url}}"], "path": ["api", "usuarios"] }
+          },
+          "response": []
+        },
+        {
+          "name": "2. Consultar catálogo de productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/productos", "host": ["{{base_url}}"], "path": ["api", "productos"] }
+          },
+          "response": []
+        },
+        {
+          "name": "3. Agregar producto al carrito",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"productoId\": {{producto_id}},\n  \"cantidad\": 2\n}" },
+            "url": { "raw": "{{base_url}}/api/carrito", "host": ["{{base_url}}"], "path": ["api", "carrito"] }
+          },
+          "response": []
+        },
+        {
+          "name": "4. Consultar carrito del usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/carrito/usuario/{{usuario_id}}", "host": ["{{base_url}}"], "path": ["api", "carrito", "usuario", "{{usuario_id}}"] }
+          },
+          "response": []
+        },
+        {
+          "name": "5. Generar pedido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"items\": [\n    { \"productoId\": {{producto_id}}, \"cantidad\": 2 }\n  ]\n}" },
+            "url": { "raw": "{{base_url}}/api/pedidos", "host": ["{{base_url}}"], "path": ["api", "pedidos"] },
+            "description": "Copia el 'id' devuelto y actualiza la variable 'pedido_id' antes de correr la siguiente petición."
+          },
+          "response": []
+        },
+        {
+          "name": "6. Verificar pedido (total y precioUnitario no null)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api", "pedidos", "{{pedido_id}}"] }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('El pedido tiene un total valido (no null, no 0)', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.total).to.not.be.null;",
+                  "    pm.expect(jsonData.total).to.be.above(0);",
+                  "});",
+                  "pm.test('Cada item tiene precioUnitario valido (no null)', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.items).to.be.an('array').that.is.not.empty;",
+                  "    jsonData.items.forEach(function (item) {",
+                  "        pm.expect(item.precioUnitario).to.not.be.null;",
+                  "        pm.expect(item.precioUnitario).to.be.above(0);",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CRUD - usuarios-service",
+      "item": [
+        { "name": "GET todos los usuarios", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/usuarios", "host": ["{{base_url}}"], "path": ["api", "usuarios"] } }, "response": [] },
+        { "name": "GET usuario por id", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/usuarios/{{usuario_id}}", "host": ["{{base_url}}"], "path": ["api", "usuarios", "{{usuario_id}}"] } }, "response": [] },
+        {
+          "name": "POST crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Usuario de Prueba\",\n  \"email\": \"prueba.postman@tecnosmart.cl\",\n  \"password\": \"clave1234\",\n  \"direccion\": \"Av. de Prueba 123, Santiago\"\n}" },
+            "url": { "raw": "{{base_url}}/api/usuarios", "host": ["{{base_url}}"], "path": ["api", "usuarios"] },
+            "description": "Copia el 'id' devuelto y actualiza 'usuario_id' si quieres usarlo en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar usuario", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/usuarios/{{usuario_id}}", "host": ["{{base_url}}"], "path": ["api", "usuarios", "{{usuario_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - catalogo-service",
+      "item": [
+        { "name": "GET todas las categorías", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/categorias", "host": ["{{base_url}}"], "path": ["api", "categorias"] } }, "response": [] },
+        {
+          "name": "POST crear categoría",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Categoria Prueba\",\n  \"descripcion\": \"Categoria creada desde Postman\"\n}" },
+            "url": { "raw": "{{base_url}}/api/categorias", "host": ["{{base_url}}"], "path": ["api", "categorias"] },
+            "description": "Copia el 'id' devuelto y actualiza 'categoria_id' si vas a usarlo al crear un producto."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar categoría", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/categorias/{{categoria_id}}", "host": ["{{base_url}}"], "path": ["api", "categorias", "{{categoria_id}}"] } }, "response": [] },
+        { "name": "GET todos los productos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/productos", "host": ["{{base_url}}"], "path": ["api", "productos"] } }, "response": [] },
+        {
+          "name": "POST crear producto",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Producto de Prueba\",\n  \"descripcion\": \"Creado desde Postman\",\n  \"precio\": 19990,\n  \"categoriaId\": {{categoria_id}}\n}" },
+            "url": { "raw": "{{base_url}}/api/productos", "host": ["{{base_url}}"], "path": ["api", "productos"] },
+            "description": "Body basado en el patrón de los DTOs confirmados (campos planos). Verifica el nombre exacto del campo contra ProductoRequestDTO.java antes de usar; podría llamarse 'categoriaId' o distinto."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar producto", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/productos/{{producto_id}}", "host": ["{{base_url}}"], "path": ["api", "productos", "{{producto_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - inventario-service",
+      "item": [
+        { "name": "GET todo el inventario", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/inventario", "host": ["{{base_url}}"], "path": ["api", "inventario"] } }, "response": [] },
+        {
+          "name": "POST crear registro de inventario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productoId\": {{producto_id}},\n  \"cantidad\": 50\n}" },
+            "url": { "raw": "{{base_url}}/api/inventario", "host": ["{{base_url}}"], "path": ["api", "inventario"] },
+            "description": "Copia el 'id' devuelto y actualiza 'inventario_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar registro de inventario", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/inventario/{{inventario_id}}", "host": ["{{base_url}}"], "path": ["api", "inventario", "{{inventario_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - carrito-service",
+      "item": [
+        { "name": "GET carrito del usuario", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/carrito/usuario/{{usuario_id}}", "host": ["{{base_url}}"], "path": ["api", "carrito", "usuario", "{{usuario_id}}"] } }, "response": [] },
+        {
+          "name": "POST agregar item al carrito",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"productoId\": {{producto_id}},\n  \"cantidad\": 1\n}" },
+            "url": { "raw": "{{base_url}}/api/carrito", "host": ["{{base_url}}"], "path": ["api", "carrito"] },
+            "description": "Copia el 'id' devuelto y actualiza 'carrito_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE quitar item del carrito", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/carrito/{{carrito_id}}", "host": ["{{base_url}}"], "path": ["api", "carrito", "{{carrito_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - pedidos-service",
+      "item": [
+        { "name": "GET todos los pedidos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/pedidos", "host": ["{{base_url}}"], "path": ["api", "pedidos"] } }, "response": [] },
+        {
+          "name": "POST crear pedido",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuarioId\": {{usuario_id}},\n  \"items\": [\n    { \"productoId\": {{producto_id}}, \"cantidad\": 1 }\n  ]\n}" },
+            "url": { "raw": "{{base_url}}/api/pedidos", "host": ["{{base_url}}"], "path": ["api", "pedidos"] },
+            "description": "Copia el 'id' devuelto y actualiza 'pedido_id' si lo vas a usar en el DELETE o en pagos/despacho."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar pedido", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api", "pedidos", "{{pedido_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - pagos-service",
+      "item": [
+        { "name": "GET todos los pagos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/pagos", "host": ["{{base_url}}"], "path": ["api", "pagos"] } }, "response": [] },
+        {
+          "name": "POST crear pago",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"pedidoId\": {{pedido_id}},\n  \"metodo\": \"WEBPAY\",\n  \"monto\": 19990,\n  \"estado\": \"APROBADO\",\n  \"fechaPago\": \"2026-07-12T12:00:00\"\n}" },
+            "url": { "raw": "{{base_url}}/api/pagos", "host": ["{{base_url}}"], "path": ["api", "pagos"] },
+            "description": "Copia el 'id' devuelto y actualiza 'pago_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar pago", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/pagos/{{pago_id}}", "host": ["{{base_url}}"], "path": ["api", "pagos", "{{pago_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - despacho-service",
+      "item": [
+        { "name": "GET todos los despachos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/despachos", "host": ["{{base_url}}"], "path": ["api", "despachos"] } }, "response": [] },
+        {
+          "name": "POST crear despacho",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"pedidoId\": {{pedido_id}},\n  \"direccion\": \"Av. de Prueba 123\",\n  \"comuna\": \"Santiago\",\n  \"estado\": \"PENDIENTE\",\n  \"fechaProgramada\": \"2026-07-20\"\n}" },
+            "url": { "raw": "{{base_url}}/api/despachos", "host": ["{{base_url}}"], "path": ["api", "despachos"] },
+            "description": "Copia el 'id' devuelto y actualiza 'despacho_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar despacho", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/despachos/{{despacho_id}}", "host": ["{{base_url}}"], "path": ["api", "despachos", "{{despacho_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - envios-service",
+      "item": [
+        { "name": "GET todos los envíos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/envios", "host": ["{{base_url}}"], "path": ["api", "envios"] } }, "response": [] },
+        {
+          "name": "POST crear envío",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"destinatario\": \"Usuario de Prueba\",\n  \"direccionDestino\": \"Av. de Prueba 123, Santiago\",\n  \"empresaTransporte\": \"Chilexpress\",\n  \"estado\": \"En preparación\"\n}" },
+            "url": { "raw": "{{base_url}}/api/envios", "host": ["{{base_url}}"], "path": ["api", "envios"] },
+            "description": "Copia el 'id' devuelto y actualiza 'envio_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar envío", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/envios/{{envio_id}}", "host": ["{{base_url}}"], "path": ["api", "envios", "{{envio_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - favoritos-service",
+      "item": [
+        { "name": "GET todos los favoritos", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/favoritos", "host": ["{{base_url}}"], "path": ["api", "favoritos"] } }, "response": [] },
+        {
+          "name": "POST crear favorito",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuario\": \"usuario1\",\n  \"tipoItem\": \"Producto\",\n  \"nombreItem\": \"Producto de Prueba\"\n}" },
+            "url": { "raw": "{{base_url}}/api/favoritos", "host": ["{{base_url}}"], "path": ["api", "favoritos"] },
+            "description": "Copia el 'id' devuelto y actualiza 'favorito_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar favorito", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/favoritos/{{favorito_id}}", "host": ["{{base_url}}"], "path": ["api", "favoritos", "{{favorito_id}}"] } }, "response": [] }
+      ]
+    },
+    {
+      "name": "CRUD - notificaciones-service",
+      "item": [
+        { "name": "GET todas las notificaciones", "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/notificaciones", "host": ["{{base_url}}"], "path": ["api", "notificaciones"] } }, "response": [] },
+        {
+          "name": "POST crear notificación",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"usuarioDestino\": \"usuario1\",\n  \"mensaje\": \"Notificacion de prueba desde Postman\",\n  \"tipoNotificacion\": \"EMAIL\"\n}" },
+            "url": { "raw": "{{base_url}}/api/notificaciones", "host": ["{{base_url}}"], "path": ["api", "notificaciones"] },
+            "description": "Copia el 'id' devuelto y actualiza 'notificacion_id' si lo vas a usar en el DELETE."
+          },
+          "response": []
+        },
+        { "name": "DELETE eliminar notificación", "request": { "method": "DELETE", "url": { "raw": "{{base_url}}/api/notificaciones/{{notificacion_id}}", "host": ["{{base_url}}"], "path": ["api", "notificaciones", "{{notificacion_id}}"] } }, "response": [] }
+      ]
+    }
+  ]
+}
