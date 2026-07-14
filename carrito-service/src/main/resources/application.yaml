@@ -29,32 +29,36 @@ eureka:
     prefer-ip-address: true
 
 ---
-# ── PERFIL LOCAL ─────────────────────────────────────
+---
+# ── PERFIL LOCAL ──────────────────────────────
 spring:
   config:
     activate:
       on-profile: local
+  flyway:
+    locations: classpath:db/migration/mysql
+    baseline-on-migrate: true
+    enabled: true
   datasource:
     url: jdbc:mysql://localhost:3306/db_carrito?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password:
+    password: system
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
-  flyway:
-    baseline-on-migrate: true
-    enabled: true
-    locations: classpath:db/migration
 
 ---
-# ── PERFIL PRODUCCIÓN ─────────────────────────────────
+# ── PERFIL PRODUCCIÓN ──────────────────────────────
 spring:
   config:
     activate:
       on-profile: prod
+  flyway:
+    locations: classpath:db/migration/postgresql
+    enabled: true
   datasource:
     url: jdbc:postgresql://dpg-d97b08urnols73ckjr60-a:5432/tecnosmart
     driver-class-name: org.postgresql.Driver
@@ -65,6 +69,3 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
-  flyway:
-    enabled: true
-    locations: classpath:db/migration

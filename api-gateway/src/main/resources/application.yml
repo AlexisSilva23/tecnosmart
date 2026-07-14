@@ -4,127 +4,131 @@ server:
 spring:
   application:
     name: api-gateway
+  profiles:
+    active: local
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
       routes:
+        # ── RUTAS DE NEGOCIO ──────────────────────────────
         - id: usuario-service
-          uri: lb://USUARIO-SERVICE
+          uri: http://usuario-service:8081
           predicates:
             - Path=/api/usuarios/**, /api/clientes/**
 
         - id: catalogo-service
-          uri: lb://CATALOGO-SERVICE
+          uri: http://catalogo-service:8082
           predicates:
             - Path=/api/productos/**, /api/categorias/**
 
         - id: inventario-service
-          uri: lb://INVENTARIO-SERVICE
+          uri: http://inventario-service:8083
           predicates:
             - Path=/api/inventario/**
 
         - id: carrito-service
-          uri: lb://CARRITO-SERVICE
+          uri: http://carrito-service:8084
           predicates:
             - Path=/api/carrito/**
 
-        - id: pedido-service
-          uri: lb://PEDIDO-SERVICE
+        - id: pedidos-service
+          uri: http://pedidos-service:8085
           predicates:
             - Path=/api/pedidos/**
 
-        - id: despacho-service
-          uri: lb://DESPACHO-SERVICE
-          predicates:
-            - Path=/api/despachos/**
-
-        - id: pago-service
-          uri: lb://PAGO-SERVICE
+        - id: pagos-service
+          uri: http://pagos-service:8086
           predicates:
             - Path=/api/pagos/**
 
+        - id: despacho-service
+          uri: http://despacho-service:8087
+          predicates:
+            - Path=/api/despachos/**
+
         - id: envios-service
-          uri: lb://ENVIOS-SERVICE
+          uri: http://envios-service:8088
           predicates:
             - Path=/api/envios/**
 
         - id: favoritos-service
-          uri: lb://FAVORITOS-SERVICE
+          uri: http://favoritos-service:8089
           predicates:
             - Path=/api/favoritos/**
 
         - id: notificaciones-service
-          uri: lb://NOTIFICACIONES-SERVICE
+          uri: http://notificaciones-service:8090
           predicates:
             - Path=/api/notificaciones/**
 
+        # ── RUTAS DE SWAGGER DOCS ─────────────────────────
         - id: usuarios-docs
-          uri: lb://USUARIO-SERVICE
+          uri: http://usuario-service:8081
           predicates:
             - Path=/usuarios-service/v3/api-docs
           filters:
             - RewritePath=/usuarios-service/(?<segment>.*), /${segment}
 
         - id: catalogo-docs
-          uri: lb://CATALOGO-SERVICE
+          uri: http://catalogo-service:8082
           predicates:
             - Path=/catalogo-service/v3/api-docs
           filters:
             - RewritePath=/catalogo-service/(?<segment>.*), /${segment}
 
         - id: inventario-docs
-          uri: lb://INVENTARIO-SERVICE
+          uri: http://inventario-service:8083
           predicates:
             - Path=/inventario-service/v3/api-docs
           filters:
             - RewritePath=/inventario-service/(?<segment>.*), /${segment}
 
         - id: carrito-docs
-          uri: lb://CARRITO-SERVICE
+          uri: http://carrito-service:8084
           predicates:
             - Path=/carrito-service/v3/api-docs
           filters:
             - RewritePath=/carrito-service/(?<segment>.*), /${segment}
 
-        - id: pedido-docs
-          uri: lb://PEDIDO-SERVICE
+        - id: pedidos-docs
+          uri: http://pedidos-service:8085
           predicates:
             - Path=/pedido-service/v3/api-docs
           filters:
             - RewritePath=/pedido-service/(?<segment>.*), /${segment}
 
         - id: despacho-docs
-          uri: lb://DESPACHO-SERVICE
+          uri: http://despacho-service:8087
           predicates:
             - Path=/despacho-service/v3/api-docs
           filters:
             - RewritePath=/despacho-service/(?<segment>.*), /${segment}
 
-        - id: pago-docs
-          uri: lb://PAGO-SERVICE
+        - id: pagos-docs
+          uri: http://pagos-service:8086
           predicates:
             - Path=/pago-service/v3/api-docs
           filters:
             - RewritePath=/pago-service/(?<segment>.*), /${segment}
 
         - id: envios-docs
-          uri: lb://ENVIOS-SERVICE
+          uri: http://envios-service:8088
           predicates:
             - Path=/envios-service/v3/api-docs
           filters:
             - RewritePath=/envios-service/(?<segment>.*), /${segment}
 
         - id: favoritos-docs
-          uri: lb://FAVORITOS-SERVICE
+          uri: http://favoritos-service:8089
           predicates:
             - Path=/favoritos-service/v3/api-docs
           filters:
             - RewritePath=/favoritos-service/(?<segment>.*), /${segment}
 
         - id: notificaciones-docs
-          uri: lb://NOTIFICACIONES-SERVICE
+          uri: http://notificaciones-service:8090
           predicates:
             - Path=/notificaciones-service/v3/api-docs
           filters:
@@ -154,6 +158,10 @@ springdoc:
         url: /favoritos-service/v3/api-docs
       - name: notificaciones-service
         url: /notificaciones-service/v3/api-docs
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
 
 eureka:
   client:

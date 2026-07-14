@@ -6,6 +6,12 @@ services:
       - "8761:8761"
     networks:
       - tecnosmart-network
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   api-gateway:
     build: ./api-gateway
@@ -13,9 +19,13 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_healthy
     environment:
       - EUREKA_URL=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_CLOUD_GATEWAY_DISCOVERY_LOCATOR_ENABLED=true
+      - SPRING_PROFILES_ACTIVE=local
     networks:
       - tecnosmart-network
 
@@ -31,7 +41,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_usuarios?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -47,7 +57,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_catalogo?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -63,7 +73,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_inventario?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -79,7 +89,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_carrito?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -95,7 +105,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_pedidos?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -111,7 +121,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_pagos?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -127,7 +137,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_despacho?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -143,7 +153,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_envios?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -159,7 +169,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_favoritos?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
@@ -175,7 +185,7 @@ services:
       - EUREKA_URL=http://eureka-server:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/db_notificaciones?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=system
     networks:
       - tecnosmart-network
 
