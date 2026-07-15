@@ -1,8 +1,8 @@
--- V1__crear_tabla_pedidos.sql
+﻿-- V1__crear_tabla_pedidos.sql
 CREATE TABLE IF NOT EXISTS pedidos (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     usuario_id BIGINT       NOT NULL,
-    total      DOUBLE,
+    total      DOUBLE PRECISION,
     fecha      TIMESTAMP    NOT NULL,
     estado     VARCHAR(50)  NOT NULL
 );

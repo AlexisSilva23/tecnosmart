@@ -1,4 +1,4 @@
--- V1__crear_tabla_pagos.sql
+﻿-- V1__crear_tabla_pagos.sql
 CREATE TABLE IF NOT EXISTS pagos (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     pedido_id  BIGINT       NOT NULL,

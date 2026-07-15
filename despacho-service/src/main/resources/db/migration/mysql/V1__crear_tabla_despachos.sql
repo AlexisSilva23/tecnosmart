@@ -1,4 +1,4 @@
--- V1__crear_tabla_despachos.sql
+﻿-- V1__crear_tabla_despachos.sql
 CREATE TABLE IF NOT EXISTS despachos (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     pedido_id        BIGINT       NOT NULL,
